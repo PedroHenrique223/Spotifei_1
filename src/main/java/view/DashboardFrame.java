@@ -17,13 +17,19 @@ import java.awt.event.ActionListener;
 /**
  *
  * @author Asus
+ *
  */
+
+
+
+
 public class DashboardFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form DasboardFrame
      */
-    public DashboardFrame() {
+    private int usuarioId;
+    public DashboardFrame(int usuarioId) {
         initComponents();
         
         this.usuarioId = usuarioId;
