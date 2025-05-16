@@ -5,11 +5,11 @@
 package main;
 
 
-import dao.ConexaoDAO;
+import dao.Conexao;
 
 public class TesteConexaoDAO {
     public static void main(String[] args) {
-        ConexaoDAO conexao = new ConexaoDAO();
+        Conexao conexao = new Conexao();
         conexao.conectar();
     }
 }
