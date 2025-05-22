@@ -115,6 +115,8 @@ deleteButton.addActionListener(e -> {
 
         listarMusicas();
     }
+    
+    
 
     // Método para adicionar o Placeholder
     private void placeholder(JTextField field, String text) {
