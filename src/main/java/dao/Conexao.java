@@ -5,24 +5,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
+    private static final String URL = "jdbc:postgresql://localhost:5432/Spotifei_1";
+    private static final String USER = "postgres"; // Altere para o seu usuário
+    private static final String PASSWORD = "admin"; // Altere para a sua senha
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/spotifei";
-    private static final String USER = "postgres"; 
-    private static final String PASSWORD = "admin"; 
-
-    public Connection conectar() {
+    public Connection getConnection() {
         try {
-            Connection conexao = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexão bem-sucedida!");
-            return conexao;
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("Conexão estabelecida com sucesso!");
+            } else {
+                System.out.println("Falha ao estabelecer conexão!");
+            }
+
+            return conn;
+
         } catch (SQLException e) {
-            System.out.println("Erro na conexão: " + e.getMessage());
+            System.out.println("Erro ao conectar ao banco de dados:");
+            e.printStackTrace();
             return null;
         }
     }
-
-    public Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
-

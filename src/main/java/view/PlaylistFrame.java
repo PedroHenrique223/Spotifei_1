@@ -2,6 +2,7 @@ package view;
 
 import controller.PlaylistController;
 import dao.Conexao;
+import dao.PlaylistMusicaDAO;
 import model.Playlist;
 
 import javax.swing.*;
@@ -12,7 +13,6 @@ import java.util.List;
 
 public class PlaylistFrame extends JFrame {
 
-    // Declaração das variáveis
     private JTable table;
     private DefaultTableModel model;
     private JTextField nomeField;
@@ -21,21 +21,25 @@ public class PlaylistFrame extends JFrame {
     private JButton deleteButton;
     private PlaylistController playlistController;
 
+    // novos campos para adicionar/remover músicas por nome
+    private JTextField musicaField;
+    private JTextField playlistNomeField;
+    private JButton addMusicaButton;
+    private JButton removeMusicaButton;
+
     public PlaylistFrame() {
-        // Configurações da Janela
         setTitle("Spotifei - Playlists");
         setSize(800, 600);
         setLayout(null);
         getContentPane().setBackground(Color.BLACK);
-        setLocationRelativeTo(null); // Centraliza a janela
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Conexão com o banco de dados
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         playlistController = new PlaylistController(conn);
+        PlaylistMusicaDAO musicaDAO = new PlaylistMusicaDAO(conn);
 
-        // ==== Tabela ====
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -46,7 +50,6 @@ public class PlaylistFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
-        // ==== Campos ====
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 300, 30);
         placeholder(nomeField, "Nome da Playlist");
@@ -57,7 +60,6 @@ public class PlaylistFrame extends JFrame {
         placeholder(usuarioField, "ID do Usuário");
         add(usuarioField);
 
-        // ==== Botões ====
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -68,7 +70,27 @@ public class PlaylistFrame extends JFrame {
         deleteButton.setBackground(new Color(215, 30, 96));
         add(deleteButton);
 
-        // ==== Ações ====
+        // novos campos
+        musicaField = new JTextField();
+        musicaField.setBounds(50, 470, 300, 30);
+        placeholder(musicaField, "Nome da Música");
+        add(musicaField);
+
+        playlistNomeField = new JTextField();
+        playlistNomeField.setBounds(370, 470, 300, 30);
+        placeholder(playlistNomeField, "Nome da Playlist");
+        add(playlistNomeField);
+
+        addMusicaButton = new JButton("Adicionar Música");
+        addMusicaButton.setBounds(50, 520, 150, 30);
+        addMusicaButton.setBackground(Color.GREEN);
+        add(addMusicaButton);
+
+        removeMusicaButton = new JButton("Remover Música");
+        removeMusicaButton.setBounds(220, 520, 150, 30);
+        removeMusicaButton.setBackground(Color.RED);
+        add(removeMusicaButton);
+
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             int usuarioId = Integer.parseInt(usuarioField.getText());
@@ -89,6 +111,30 @@ public class PlaylistFrame extends JFrame {
                 listarPlaylists();
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione uma playlist para remover.");
+            }
+        });
+
+        addMusicaButton.addActionListener(e -> {
+            String nomeMusica = musicaField.getText();
+            String nomePlaylist = playlistNomeField.getText();
+
+            boolean sucesso = musicaDAO.adicionarMusicaNaPlaylist(nomeMusica, nomePlaylist);
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Música adicionada à playlist!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao adicionar música.");
+            }
+        });
+
+        removeMusicaButton.addActionListener(e -> {
+            String nomeMusica = musicaField.getText();
+            String nomePlaylist = playlistNomeField.getText();
+
+            boolean sucesso = musicaDAO.removerMusicaDaPlaylist(nomeMusica, nomePlaylist);
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Música removida da playlist!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao remover música.");
             }
         });
 
@@ -117,7 +163,7 @@ public class PlaylistFrame extends JFrame {
     }
 
     private void listarPlaylists() {
-        model.setRowCount(0); // Limpa a tabela
+        model.setRowCount(0);
         List<Playlist> playlists = playlistController.listarPlaylists();
         for (Playlist p : playlists) {
             model.addRow(new Object[]{p.getId(), p.getNome(), p.getUsuarioId()});
