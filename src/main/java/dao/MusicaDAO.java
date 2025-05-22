@@ -32,7 +32,12 @@ public class MusicaDAO {
         String sql = "SELECT * FROM musica";
         try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Musica musica = new Musica(rs.getInt("id"), rs.getString("nome"), rs.getString("artista"), rs.getString("genero"));
+                Musica musica = new Musica(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("artista"),
+                    rs.getString("genero")
+                );
                 musicas.add(musica);
             }
         } catch (SQLException e) {
@@ -40,19 +45,41 @@ public class MusicaDAO {
         }
         return musicas;
     }
-    
-    public boolean delete(int id) {
-    String sql = "DELETE FROM musica WHERE id = ?";
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
-        return true;
-    } catch (SQLException e) {
-        System.out.println("Erro ao remover música: " + e.getMessage());
-        return false;
-    }
-}
 
-    
-    
+    public boolean delete(int id) {
+        String sql = "DELETE FROM musica WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro ao remover música: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ✅ Função de busca de músicas
+    public List<Musica> buscarMusicas(String termoBusca) {
+        List<Musica> musicas = new ArrayList<>();
+        String sql = "SELECT * FROM musica WHERE nome ILIKE ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, "%" + termoBusca + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Musica musica = new Musica(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("artista"),
+                    rs.getString("genero")
+                );
+                musicas.add(musica);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar músicas: " + e.getMessage());
+        }
+
+        return musicas;
+    }
 }

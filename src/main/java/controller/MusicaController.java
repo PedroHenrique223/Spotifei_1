@@ -23,7 +23,10 @@ public class MusicaController {
     
     public boolean removerMusica(int id) {
     return musicaDAO.delete(id);
-}
+    
+    }
+    
+    
 
     
 }

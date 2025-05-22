@@ -2,6 +2,10 @@ package view;
 
 import controller.MusicaController;
 import dao.Conexao;
+import dao.CurtidaDAO;
+import dao.HistoricoBuscaDAO;
+import model.Curtida;
+import model.HistoricoBusca;
 import model.Musica;
 
 import javax.swing.*;
@@ -20,7 +24,12 @@ public class MusicaFrame extends JFrame {
     private JTextField generoField;
     private JButton addButton;
     private JButton deleteButton;
+    private JButton curtirButton;
+    private JButton descurtirButton;
     private MusicaController musicaController;
+
+    // Simulação de usuário logado
+    private int usuarioId = 1; // Ajuste para pegar o usuário correto
 
     public MusicaFrame() {
         // Configurações da Janela
@@ -75,6 +84,16 @@ public class MusicaFrame extends JFrame {
         deleteButton.setBackground(new Color(215, 30, 96));
         add(deleteButton);
 
+        curtirButton = new JButton("Curtir");
+        curtirButton.setBounds(390, 420, 150, 30);
+        curtirButton.setBackground(new Color(50, 150, 255));
+        add(curtirButton);
+
+        descurtirButton = new JButton("Descurtir");
+        descurtirButton.setBounds(560, 420, 150, 30);
+        descurtirButton.setBackground(new Color(255, 100, 100));
+        add(descurtirButton);
+
         // ==== Ações ====
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
@@ -89,34 +108,79 @@ public class MusicaFrame extends JFrame {
             }
         });
 
-deleteButton.addActionListener(e -> {
-    int row = table.getSelectedRow();
-    if (row != -1) {
-        int id = Integer.parseInt(model.getValueAt(row, 0).toString());
+        deleteButton.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int id = Integer.parseInt(model.getValueAt(row, 0).toString());
 
-        int confirm = JOptionPane.showConfirmDialog(null, 
-            "Deseja realmente remover a música selecionada?", 
-            "Confirmação", 
-            JOptionPane.YES_NO_OPTION);
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "Deseja realmente remover a música selecionada?",
+                        "Confirmação",
+                        JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            if (musicaController.removerMusica(id)) {
-                JOptionPane.showMessageDialog(null, "Música removida com sucesso!");
-                listarMusicas(); // Atualiza a lista
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (musicaController.removerMusica(id)) {
+                        JOptionPane.showMessageDialog(null, "Música removida com sucesso!");
+                        listarMusicas(); // Atualiza a lista
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Erro ao remover música.");
+                    }
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Erro ao remover música.");
+                JOptionPane.showMessageDialog(null, "Selecione uma música para remover.");
             }
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Selecione uma música para remover.");
-    }
-});
+        });
 
+        curtirButton.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int idMusica = Integer.parseInt(model.getValueAt(row, 0).toString());
+
+                try {
+                    Conexao conexao1 = new Conexao();
+                    Connection conn1 = conexao1.getConnection();
+
+                    CurtidaDAO curtidaDAO = new CurtidaDAO(conn1);
+                    curtidaDAO.curtirMusica(usuarioId, idMusica);
+
+                    JOptionPane.showMessageDialog(null, "Música curtida com sucesso!");
+
+                    conn1.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao curtir música.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione uma música para curtir.");
+            }
+        });
+
+        descurtirButton.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int idMusica = Integer.parseInt(model.getValueAt(row, 0).toString());
+
+                try {
+                    Conexao conexao1 = new Conexao();
+                    Connection conn1 = conexao1.getConnection();
+
+                    CurtidaDAO curtidaDAO = new CurtidaDAO(conn1);
+                    curtidaDAO.descurtirMusica(usuarioId, idMusica);
+
+                    JOptionPane.showMessageDialog(null, "Música descurtida com sucesso!");
+
+                    conn1.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Erro ao descurtir música.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione uma música para descurtir.");
+            }
+        });
 
         listarMusicas();
     }
-    
-    
 
     // Método para adicionar o Placeholder
     private void placeholder(JTextField field, String text) {
@@ -142,6 +206,20 @@ deleteButton.addActionListener(e -> {
 
     private void listarMusicas() {
         model.setRowCount(0); // Limpa a tabela
+
+        try {
+            // Antes de listar, registra a busca
+            Conexao conexao = new Conexao();
+            Connection conn = conexao.getConnection();
+
+            HistoricoBuscaDAO historicoBuscaDAO = new HistoricoBuscaDAO(conn);
+            historicoBuscaDAO.registrarBusca(usuarioId, "Listagem de todas as músicas");
+
+            conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         List<Musica> musicas = musicaController.listarMusicas();
         for (Musica m : musicas) {
             model.addRow(new Object[]{m.getId(), m.getNome(), m.getArtista(), m.getGenero()});
