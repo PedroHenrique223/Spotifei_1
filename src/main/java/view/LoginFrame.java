@@ -127,7 +127,9 @@ public class LoginFrame extends JFrame {
         if (usuarioLogado != null) {
             JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
             dispose(); // Fecha a tela de login
-            new DashboardFrame(usuarioLogado.getId()).setVisible(true); // Passa o ID para o Dashboard
+            Connection conexao = dao.Conexao.getConexao(); 
+            new DashboardFrame(usuarioLogado.getId(), conexao).setVisible(true);
+ // Passa o ID para o Dashboard
         } else {
             JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos.");
         }

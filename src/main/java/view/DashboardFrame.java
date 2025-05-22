@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 /**
  *
@@ -28,9 +29,13 @@ public class DashboardFrame extends javax.swing.JFrame {
     /**
      * Creates new form DasboardFrame
      */
+    private Connection conexao;
+    
+
     private int usuarioId;
-    public DashboardFrame(int usuarioId) {
+    public DashboardFrame(int usuarioId, Connection conexao) {
         initComponents();
+        this.conexao = conexao;
         
         this.usuarioId = usuarioId;
         setTitle("Spotifei - Dashboard");
@@ -51,6 +56,17 @@ public class DashboardFrame extends javax.swing.JFrame {
         dashboardLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
         dashboardLabel.setForeground(new Color(30, 215, 96));
         add(dashboardLabel);
+        
+        JButton buscarMusicaButton = new JButton("Buscar Músicas");
+        buscarMusicaButton.setBounds(300, 340, 200, 50);
+        buscarMusicaButton.setBackground(new Color(30, 215, 96));
+        buscarMusicaButton.setForeground(Color.BLACK);
+        add(buscarMusicaButton);
+
+        buscarMusicaButton.addActionListener(e -> {
+        new BuscarMusicaFrame(conexao, usuarioId);
+        });
+
 
     // ==== Botões ====
         JButton musicButton = new JButton("Músicas");
@@ -123,13 +139,20 @@ public class DashboardFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-  java.awt.EventQueue.invokeLater(new Runnable() {
+    java.awt.EventQueue.invokeLater(new Runnable() {
         public void run() {
-            int usuarioId = 1; // ID de teste, depois vamos colocar o correto
-            new DashboardFrame(usuarioId).setVisible(true);
+            int usuarioId = 1; 
+            Connection conexao = dao.Conexao.getConexao(); 
+
+            if (conexao != null) {
+                new DashboardFrame(usuarioId, conexao).setVisible(true);
+            } else {
+                System.out.println("Erro: Não foi possível estabelecer conexão com o banco de dados.");
+            }
         }
     });
-    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
