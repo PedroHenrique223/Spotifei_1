@@ -6,6 +6,7 @@ public class Usuario {
     private String email;
     private String senha;
 
+    // construtor que inicializa todos os atributos
     public Usuario(int id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
@@ -13,6 +14,7 @@ public class Usuario {
         this.senha = senha;
     }
 
+    // getters e setters
     public int getId() {
         return id;
     }
@@ -45,4 +47,3 @@ public class Usuario {
         this.senha = senha;
     }
 }
-

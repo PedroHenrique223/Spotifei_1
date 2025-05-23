@@ -7,7 +7,7 @@ public class Curtida {
     private int idUsuario;
     private int idMusica;
     private Timestamp dataCurtida;
-    private String nomeMusica; // para exibir no histórico
+    private String nomeMusica; // usado pra exibir o nome da música no histórico
 
     // getters e setters
     public int getId() { return id; }

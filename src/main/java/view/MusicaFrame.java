@@ -27,7 +27,7 @@ public class MusicaFrame extends JFrame {
     private JButton verCurtidasButton;
     private MusicaController musicaController;
 
-    private int usuarioId = 1; // Ajuste conforme necessário
+    private int usuarioId = 1; // id fixo, ajusta se quiser
 
     public MusicaFrame() {
         setTitle("Spotifei - Músicas");
@@ -37,10 +37,12 @@ public class MusicaFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // conecta no banco
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         musicaController = new MusicaController(conn);
 
+        // configura a tabela
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -52,6 +54,7 @@ public class MusicaFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
+        // campos de entrada
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 200, 30);
         placeholder(nomeField, "Nome");
@@ -67,6 +70,7 @@ public class MusicaFrame extends JFrame {
         placeholder(generoField, "Gênero");
         add(generoField);
 
+        // botões
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -92,6 +96,7 @@ public class MusicaFrame extends JFrame {
         verCurtidasButton.setBackground(new Color(150, 100, 255));
         add(verCurtidasButton);
 
+        // ação adicionar música
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             String artista = artistaField.getText();
@@ -105,6 +110,7 @@ public class MusicaFrame extends JFrame {
             }
         });
 
+        // ação remover música
         deleteButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
@@ -128,6 +134,7 @@ public class MusicaFrame extends JFrame {
             }
         });
 
+        // ação curtir música
         curtirButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
@@ -152,6 +159,7 @@ public class MusicaFrame extends JFrame {
             }
         });
 
+        // ação descurtir música
         descurtirButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
@@ -176,6 +184,7 @@ public class MusicaFrame extends JFrame {
             }
         });
 
+        // ação ver curtidas
         verCurtidasButton.addActionListener(e -> {
             try {
                 Conexao conexao1 = new Conexao();
@@ -207,9 +216,10 @@ public class MusicaFrame extends JFrame {
             }
         });
 
-        listarMusicas();
+        listarMusicas(); // carrega músicas ao abrir
     }
 
+    // método pra placeholder no campo
     private void placeholder(JTextField field, String text) {
         field.setText(text);
         field.setForeground(Color.GRAY);
@@ -231,6 +241,7 @@ public class MusicaFrame extends JFrame {
         });
     }
 
+    // lista todas as músicas e registra no histórico
     private void listarMusicas() {
         model.setRowCount(0);
 
@@ -252,6 +263,7 @@ public class MusicaFrame extends JFrame {
         }
     }
 
+    // main pra rodar a tela
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new MusicaFrame().setVisible(true);

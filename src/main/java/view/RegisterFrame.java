@@ -17,15 +17,15 @@ public class RegisterFrame extends JFrame {
     private JButton backButton;
 
     public RegisterFrame() {
-        // Configurações da Janela
+        // configurações da janela
         setTitle("Spotifei - Registro");
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(Color.BLACK);
-        setLocationRelativeTo(null); // Centraliza a janela
+        setLocationRelativeTo(null); // centraliza
 
-        //  Título 
+        // título
         JLabel titleLabel = new JLabel("SPOTIFEI", SwingConstants.CENTER);
         titleLabel.setBounds(0, 40, 600, 50);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
@@ -38,7 +38,7 @@ public class RegisterFrame extends JFrame {
         loginLabel.setForeground(new Color(30, 215, 96));
         add(loginLabel);
 
-        //  Campos 
+        // campos de entrada
         nameField = new JTextField();
         nameField.setBounds(180, 180, 240, 35);
         nameField.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -59,12 +59,12 @@ public class RegisterFrame extends JFrame {
         passwordField.setBounds(180, 300, 240, 35);
         passwordField.setFont(new Font("SansSerif", Font.PLAIN, 16));
         passwordField.setForeground(Color.GRAY);
-        passwordField.setEchoChar((char) 0);
+        passwordField.setEchoChar((char) 0); // sem asterisco pro placeholder
         passwordField.setText("Senha");
         placeholder(passwordField, "Senha");
         add(passwordField);
 
-        // ==== Botões ====
+        // botões
         registerButton = new JButton("Registrar");
         registerButton.setBounds(180, 370, 120, 35);
         registerButton.setBackground(new Color(30, 215, 96));
@@ -77,12 +77,12 @@ public class RegisterFrame extends JFrame {
         backButton.setForeground(Color.BLACK);
         add(backButton);
 
-        // Conexão com o banco de dados
+        // conexão com o banco
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         UsuarioController usuarioController = new UsuarioController(conn);
 
-        // Ação de Registrar
+        // ação registrar
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,7 +92,7 @@ public class RegisterFrame extends JFrame {
 
                 if (usuarioController.cadastrarUsuario(nome, email, senha)) {
                     JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso!");
-                    dispose();
+                    dispose(); // fecha registro
                     new LoginFrame().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Erro ao cadastrar usuário.");
@@ -100,7 +100,7 @@ public class RegisterFrame extends JFrame {
             }
         });
 
-        // Ação de Voltar
+        // ação voltar
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,7 @@ public class RegisterFrame extends JFrame {
         });
     }
 
-    // Método para adicionar placeholder
+    // método placeholder pro campo
     private void placeholder(JTextField field, String text) {
         field.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -119,7 +119,6 @@ public class RegisterFrame extends JFrame {
                     field.setForeground(Color.BLACK);
                 }
             }
-
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (field.getText().isEmpty()) {
                     field.setForeground(Color.GRAY);
@@ -129,6 +128,7 @@ public class RegisterFrame extends JFrame {
         });
     }
 
+    // main pra rodar a tela
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new RegisterFrame().setVisible(true);

@@ -5,12 +5,14 @@ public class Playlist {
     private String nome;
     private int usuarioId;
 
+    // construtor que inicializa todos os atributos
     public Playlist(int id, String nome, int usuarioId) {
         this.id = id;
         this.nome = nome;
         this.usuarioId = usuarioId;
     }
 
+    // getters e setters
     public int getId() {
         return id;
     }

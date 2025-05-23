@@ -8,10 +8,12 @@ import java.util.List;
 public class HistoricoBuscaDAO {
     private Connection conexao;
 
+    // construtor que recebe a conexão
     public HistoricoBuscaDAO(Connection conexao) {
         this.conexao = conexao;
     }
 
+    // registra uma nova busca no histórico
     public void registrarBusca(int idUsuario, String termo) throws Exception {
         String sql = "INSERT INTO historico_busca (id_usuario, termo_busca) VALUES (?, ?)";
         PreparedStatement ps = conexao.prepareStatement(sql);
@@ -20,6 +22,7 @@ public class HistoricoBuscaDAO {
         ps.executeUpdate();
     }
 
+    // lista todas as buscas feitas pelo usuário, ordenadas pela data (mais recente primeiro)
     public List<HistoricoBusca> listarBuscas(int idUsuario) throws Exception {
         List<HistoricoBusca> lista = new ArrayList<>();
         String sql = "SELECT * FROM historico_busca WHERE id_usuario = ? ORDER BY data_busca DESC";

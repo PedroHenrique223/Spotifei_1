@@ -6,6 +6,7 @@ public class Musica {
     private String artista;
     private String genero;
 
+    // construtor que inicializa todos os atributos
     public Musica(int id, String nome, String artista, String genero) {
         this.id = id;
         this.nome = nome;
@@ -13,6 +14,7 @@ public class Musica {
         this.genero = genero;
     }
 
+    // getters e setters
     public int getId() {
         return id;
     }

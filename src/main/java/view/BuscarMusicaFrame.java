@@ -17,6 +17,7 @@ public class BuscarMusicaFrame extends JFrame {
     private MusicaController musicaController;
     private int idUsuario;
 
+    // construtor que recebe a conexão e o id do usuário
     public BuscarMusicaFrame(Connection conexao, int idUsuario) {
         this.musicaController = new MusicaController(conexao);
         this.idUsuario = idUsuario;
@@ -25,11 +26,13 @@ public class BuscarMusicaFrame extends JFrame {
         setSize(400, 300);
         setLayout(new BorderLayout());
 
+        // componentes da interface
         campoBusca = new JTextField();
         botaoBuscar = new JButton("Buscar");
         areaResultado = new JTextArea();
         areaResultado.setEditable(false);
 
+        // painel de busca no topo
         JPanel painelTopo = new JPanel(new BorderLayout());
         painelTopo.add(campoBusca, BorderLayout.CENTER);
         painelTopo.add(botaoBuscar, BorderLayout.EAST);
@@ -37,6 +40,7 @@ public class BuscarMusicaFrame extends JFrame {
         add(painelTopo, BorderLayout.NORTH);
         add(new JScrollPane(areaResultado), BorderLayout.CENTER);
 
+        // ação do botão buscar
         botaoBuscar.addActionListener(e -> {
             String termo = campoBusca.getText();
             List<Musica> musicas = musicaController.buscarMusicas(idUsuario, termo);

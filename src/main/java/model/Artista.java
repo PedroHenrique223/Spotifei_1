@@ -5,17 +5,17 @@ public class Artista {
     private String nome;
     private String genero;
 
-    // Construtor padrão
+    // construtor padrão
     public Artista() {}
 
-    // Construtor com parâmetros
+    // construtor com parâmetros
     public Artista(int id, String nome, String genero) {
         this.id = id;
         this.nome = nome;
         this.genero = genero;
     }
 
-    // Getters e Setters
+    // getters e Setters
     public int getId() {
         return id;
     }

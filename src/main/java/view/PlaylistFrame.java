@@ -21,7 +21,7 @@ public class PlaylistFrame extends JFrame {
     private JButton deleteButton;
     private PlaylistController playlistController;
 
-    // novos campos para adicionar/remover músicas por nome
+    // campos extras pra adicionar/remover músicas
     private JTextField musicaField;
     private JTextField playlistNomeField;
     private JButton addMusicaButton;
@@ -35,11 +35,13 @@ public class PlaylistFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        // conexão e controller
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         playlistController = new PlaylistController(conn);
         PlaylistMusicaDAO musicaDAO = new PlaylistMusicaDAO(conn);
 
+        // configuração da tabela
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -50,6 +52,7 @@ public class PlaylistFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
+        // campos
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 300, 30);
         placeholder(nomeField, "Nome da Playlist");
@@ -60,6 +63,7 @@ public class PlaylistFrame extends JFrame {
         placeholder(usuarioField, "ID do Usuário");
         add(usuarioField);
 
+        // botões
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -70,7 +74,7 @@ public class PlaylistFrame extends JFrame {
         deleteButton.setBackground(new Color(215, 30, 96));
         add(deleteButton);
 
-        // novos campos
+        // campos extras
         musicaField = new JTextField();
         musicaField.setBounds(50, 470, 300, 30);
         placeholder(musicaField, "Nome da Música");
@@ -81,6 +85,7 @@ public class PlaylistFrame extends JFrame {
         placeholder(playlistNomeField, "Nome da Playlist");
         add(playlistNomeField);
 
+        // botões de música
         addMusicaButton = new JButton("Adicionar Música");
         addMusicaButton.setBounds(50, 520, 150, 30);
         addMusicaButton.setBackground(Color.GREEN);
@@ -91,6 +96,7 @@ public class PlaylistFrame extends JFrame {
         removeMusicaButton.setBackground(Color.RED);
         add(removeMusicaButton);
 
+        // ação adicionar playlist
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             int usuarioId = Integer.parseInt(usuarioField.getText());
@@ -103,6 +109,7 @@ public class PlaylistFrame extends JFrame {
             }
         });
 
+        // ação remover playlist (só a mensagem, não implementa delete real)
         deleteButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row != -1) {
@@ -114,6 +121,7 @@ public class PlaylistFrame extends JFrame {
             }
         });
 
+        // ação adicionar música na playlist
         addMusicaButton.addActionListener(e -> {
             String nomeMusica = musicaField.getText();
             String nomePlaylist = playlistNomeField.getText();
@@ -126,6 +134,7 @@ public class PlaylistFrame extends JFrame {
             }
         });
 
+        // ação remover música da playlist
         removeMusicaButton.addActionListener(e -> {
             String nomeMusica = musicaField.getText();
             String nomePlaylist = playlistNomeField.getText();
@@ -138,9 +147,10 @@ public class PlaylistFrame extends JFrame {
             }
         });
 
-        listarPlaylists();
+        listarPlaylists(); // carrega as playlists ao abrir
     }
 
+    // método placeholder pro campo
     private void placeholder(JTextField field, String text) {
         field.setText(text);
         field.setForeground(Color.GRAY);
@@ -152,7 +162,6 @@ public class PlaylistFrame extends JFrame {
                     field.setForeground(Color.BLACK);
                 }
             }
-
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (field.getText().isEmpty()) {
                     field.setForeground(Color.GRAY);
@@ -162,6 +171,7 @@ public class PlaylistFrame extends JFrame {
         });
     }
 
+    // carrega as playlists na tabela
     private void listarPlaylists() {
         model.setRowCount(0);
         List<Playlist> playlists = playlistController.listarPlaylists();
@@ -170,6 +180,7 @@ public class PlaylistFrame extends JFrame {
         }
     }
 
+    // main pra rodar
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new PlaylistFrame().setVisible(true);

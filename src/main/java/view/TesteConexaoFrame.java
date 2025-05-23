@@ -14,36 +14,36 @@ public class TesteConexaoFrame extends JFrame {
     private JLabel statusLabel;
 
     public TesteConexaoFrame() {
-        // Configurações da Janela
+        // configurações da janela
         setTitle("Spotifei - Teste de Conexão");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         getContentPane().setBackground(Color.BLACK);
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // centraliza
 
-        //  Título 
+        // título
         JLabel titleLabel = new JLabel("Teste de Conexão", SwingConstants.CENTER);
         titleLabel.setBounds(0, 20, 400, 30);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
         titleLabel.setForeground(new Color(30, 215, 96));
         add(titleLabel);
 
-        //  Botão de Teste 
+        // botão de teste
         testarConexaoButton = new JButton("Testar Conexão");
         testarConexaoButton.setBounds(125, 100, 150, 40);
         testarConexaoButton.setBackground(new Color(30, 215, 96));
         testarConexaoButton.setForeground(Color.BLACK);
         add(testarConexaoButton);
 
-        //  Status 
+        // label de status
         statusLabel = new JLabel("", SwingConstants.CENTER);
         statusLabel.setBounds(0, 180, 400, 30);
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
         statusLabel.setForeground(Color.WHITE);
         add(statusLabel);
 
-        // Ação do botão
+        // ação do botão
         testarConexaoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,6 +80,7 @@ public class TesteConexaoFrame extends JFrame {
         });
     }
 
+    // main pra rodar a tela
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new TesteConexaoFrame().setVisible(true);
