@@ -45,7 +45,7 @@ public class MusicaFrame extends JFrame {
         Connection conn = conexao.getConnection();
         musicaController = new MusicaController(conn);
 
-        // ==== Tabela ====
+        //  Tabela 
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -57,7 +57,7 @@ public class MusicaFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
-        // ==== Campos ====
+        //  Campos 
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 200, 30);
         placeholder(nomeField, "Nome");
@@ -73,7 +73,7 @@ public class MusicaFrame extends JFrame {
         placeholder(generoField, "Gênero");
         add(generoField);
 
-        // ==== Botões ====
+        //  Botões 
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -94,7 +94,7 @@ public class MusicaFrame extends JFrame {
         descurtirButton.setBackground(new Color(255, 100, 100));
         add(descurtirButton);
 
-        // ==== Ações ====
+        //  Ações 
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             String artista = artistaField.getText();

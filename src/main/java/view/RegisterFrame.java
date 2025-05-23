@@ -25,7 +25,7 @@ public class RegisterFrame extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null); // Centraliza a janela
 
-        // ==== Título ====
+        //  Título 
         JLabel titleLabel = new JLabel("SPOTIFEI", SwingConstants.CENTER);
         titleLabel.setBounds(0, 40, 600, 50);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
@@ -38,7 +38,7 @@ public class RegisterFrame extends JFrame {
         loginLabel.setForeground(new Color(30, 215, 96));
         add(loginLabel);
 
-        // ==== Campos ====
+        //  Campos 
         nameField = new JTextField();
         nameField.setBounds(180, 180, 240, 35);
         nameField.setFont(new Font("SansSerif", Font.PLAIN, 16));

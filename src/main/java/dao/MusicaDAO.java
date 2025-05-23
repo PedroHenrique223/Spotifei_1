@@ -58,7 +58,7 @@ public class MusicaDAO {
         }
     }
 
-    // ✅ Função de busca de músicas
+    //  Função de busca de músicas
     public List<Musica> buscarMusicas(String termoBusca) {
         List<Musica> musicas = new ArrayList<>();
         String sql = "SELECT * FROM musica WHERE nome ILIKE ?";

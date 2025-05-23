@@ -22,21 +22,21 @@ public class TesteConexaoFrame extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null);
 
-        // ==== Título ====
+        //  Título 
         JLabel titleLabel = new JLabel("Teste de Conexão", SwingConstants.CENTER);
         titleLabel.setBounds(0, 20, 400, 30);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
         titleLabel.setForeground(new Color(30, 215, 96));
         add(titleLabel);
 
-        // ==== Botão de Teste ====
+        //  Botão de Teste 
         testarConexaoButton = new JButton("Testar Conexão");
         testarConexaoButton.setBounds(125, 100, 150, 40);
         testarConexaoButton.setBackground(new Color(30, 215, 96));
         testarConexaoButton.setForeground(Color.BLACK);
         add(testarConexaoButton);
 
-        // ==== Status ====
+        //  Status 
         statusLabel = new JLabel("", SwingConstants.CENTER);
         statusLabel.setBounds(0, 180, 400, 30);
         statusLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));

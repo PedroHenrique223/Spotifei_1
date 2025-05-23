@@ -26,7 +26,7 @@ public class LoginFrame extends JFrame {
         getContentPane().setBackground(Color.BLACK);
         setLocationRelativeTo(null); // Centraliza a janela
 
-        // ==== Título ====
+        //  Título 
         JLabel titleLabel = new JLabel("SPOTIFEI", SwingConstants.CENTER);
         titleLabel.setBounds(0, 40, 600, 50);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 48));
@@ -39,14 +39,14 @@ public class LoginFrame extends JFrame {
         loginLabel.setForeground(new Color(30, 215, 96));
         add(loginLabel);
 
-        // ==== Campos ====
+        //  Campos 
         emailField = new JTextField();
         emailField.setBounds(180, 180, 240, 35);
         emailField.setFont(new Font("SansSerif", Font.PLAIN, 16));
         emailField.setForeground(Color.GRAY);
         emailField.setText("Email");
 
-        // Placeholder para "Email"
+        // Placeholder para email
         emailField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (emailField.getText().equals("Email")) {
@@ -72,7 +72,7 @@ public class LoginFrame extends JFrame {
         passwordField.setEchoChar((char) 0); // Remover os asteriscos para o placeholder
         passwordField.setText("Senha");
 
-        // Placeholder para "Senha"
+        // Placeholder para senha
         passwordField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (String.valueOf(passwordField.getPassword()).equals("Senha")) {
@@ -93,7 +93,7 @@ public class LoginFrame extends JFrame {
 
         add(passwordField);
 
-        // ==== Botões ====
+        //  Botões 
         loginButton = new JButton("Login");
         loginButton.setBounds(180, 300, 100, 35);
         loginButton.setBackground(new Color(30, 215, 96));

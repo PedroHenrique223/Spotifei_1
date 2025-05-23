@@ -36,7 +36,7 @@ public class ArtistaFrame extends JFrame {
         Connection conn = conexao.getConnection();
         artistaController = new ArtistaController(conn);
 
-        // ==== Tabela ====
+        //  Tabela 
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -47,7 +47,7 @@ public class ArtistaFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
-        // ==== Campos ====
+        //  Campos 
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 300, 30);
         placeholder(nomeField, "Nome do Artista");
@@ -58,7 +58,7 @@ public class ArtistaFrame extends JFrame {
         placeholder(generoField, "Gênero Musical");
         add(generoField);
 
-        // ==== Botões ====
+        //  Botões 
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -69,7 +69,7 @@ public class ArtistaFrame extends JFrame {
         deleteButton.setBackground(new Color(215, 30, 96));
         add(deleteButton);
 
-        // ==== Ações ====
+        //  Ações 
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             String genero = generoField.getText();
