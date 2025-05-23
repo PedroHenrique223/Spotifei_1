@@ -39,7 +39,7 @@ public class HistoricoFrame extends JFrame {
             CurtidaDAO curtidaDAO = new CurtidaDAO(conn);
             List<Curtida> curtidas = curtidaDAO.listarCurtidas(usuarioId);
             for (Curtida c : curtidas) {
-                curtidasModel.addRow(new Object[]{c.getId(), c.getTituloMusica(), c.getDataCurtida()});
+                curtidasModel.addRow(new Object[]{c.getId(), c.getNomeMusica(), c.getDataCurtida()});
             }
 
             HistoricoBuscaDAO buscaDAO = new HistoricoBuscaDAO(conn);

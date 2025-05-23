@@ -39,7 +39,9 @@ public class CurtidaDAO {
 
     public List<Curtida> listarCurtidas(int idUsuario) throws Exception {
         List<Curtida> lista = new ArrayList<>();
-        String sql = "SELECT c.id, m.titulo, c.data_curtida FROM curtida c JOIN musica m ON c.id_musica = m.id WHERE c.id_usuario = ?";
+        String sql = "SELECT c.id, m.nome, c.data_curtida FROM curtida c " +
+                     "JOIN musica m ON c.id_musica = m.id " +
+                     "WHERE c.id_usuario = ?";
         PreparedStatement ps = conexao.prepareStatement(sql);
         ps.setInt(1, idUsuario);
         ResultSet rs = ps.executeQuery();
@@ -47,7 +49,7 @@ public class CurtidaDAO {
         while (rs.next()) {
             Curtida c = new Curtida();
             c.setId(rs.getInt("id"));
-            c.setTituloMusica(rs.getString("titulo"));
+            c.setNomeMusica(rs.getString("nome")); // nome da música
             c.setDataCurtida(rs.getTimestamp("data_curtida"));
             lista.add(c);
         }

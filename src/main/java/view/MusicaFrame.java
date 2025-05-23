@@ -5,7 +5,6 @@ import dao.Conexao;
 import dao.CurtidaDAO;
 import dao.HistoricoBuscaDAO;
 import model.Curtida;
-import model.HistoricoBusca;
 import model.Musica;
 
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.util.List;
 
 public class MusicaFrame extends JFrame {
 
-    // Declaração das variáveis
     private JTable table;
     private DefaultTableModel model;
     private JTextField nomeField;
@@ -26,26 +24,23 @@ public class MusicaFrame extends JFrame {
     private JButton deleteButton;
     private JButton curtirButton;
     private JButton descurtirButton;
+    private JButton verCurtidasButton;
     private MusicaController musicaController;
 
-    // Simulação de usuário logado
-    private int usuarioId = 1; // Ajuste para pegar o usuário correto
+    private int usuarioId = 1; // Ajuste conforme necessário
 
     public MusicaFrame() {
-        // Configurações da Janela
         setTitle("Spotifei - Músicas");
         setSize(800, 600);
         setLayout(null);
         getContentPane().setBackground(Color.BLACK);
-        setLocationRelativeTo(null); // Centraliza a janela
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Conexão com o banco de dados
         Conexao conexao = new Conexao();
         Connection conn = conexao.getConnection();
         musicaController = new MusicaController(conn);
 
-        //  Tabela 
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nome");
@@ -57,7 +52,6 @@ public class MusicaFrame extends JFrame {
         pane.setBounds(50, 50, 700, 300);
         add(pane);
 
-        //  Campos 
         nomeField = new JTextField();
         nomeField.setBounds(50, 370, 200, 30);
         placeholder(nomeField, "Nome");
@@ -73,7 +67,6 @@ public class MusicaFrame extends JFrame {
         placeholder(generoField, "Gênero");
         add(generoField);
 
-        //  Botões 
         addButton = new JButton("Adicionar");
         addButton.setBounds(50, 420, 150, 30);
         addButton.setBackground(new Color(30, 215, 96));
@@ -94,7 +87,11 @@ public class MusicaFrame extends JFrame {
         descurtirButton.setBackground(new Color(255, 100, 100));
         add(descurtirButton);
 
-        //  Ações 
+        verCurtidasButton = new JButton("Ver Curtidas");
+        verCurtidasButton.setBounds(50, 470, 150, 30);
+        verCurtidasButton.setBackground(new Color(150, 100, 255));
+        add(verCurtidasButton);
+
         addButton.addActionListener(e -> {
             String nome = nomeField.getText();
             String artista = artistaField.getText();
@@ -121,7 +118,7 @@ public class MusicaFrame extends JFrame {
                 if (confirm == JOptionPane.YES_OPTION) {
                     if (musicaController.removerMusica(id)) {
                         JOptionPane.showMessageDialog(null, "Música removida com sucesso!");
-                        listarMusicas(); // Atualiza a lista
+                        listarMusicas();
                     } else {
                         JOptionPane.showMessageDialog(null, "Erro ao remover música.");
                     }
@@ -179,10 +176,40 @@ public class MusicaFrame extends JFrame {
             }
         });
 
+        verCurtidasButton.addActionListener(e -> {
+            try {
+                Conexao conexao1 = new Conexao();
+                Connection conn1 = conexao1.getConnection();
+
+                CurtidaDAO curtidaDAO = new CurtidaDAO(conn1);
+                List<Curtida> curtidas = curtidaDAO.listarCurtidas(usuarioId);
+
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                String[] colunas = {"Nome da Música", "Data da Curtida"};
+                DefaultTableModel curtidasModel = new DefaultTableModel(colunas, 0);
+
+                for (Curtida c : curtidas) {
+                    String dataFormatada = sdf.format(c.getDataCurtida());
+                    curtidasModel.addRow(new Object[]{c.getNomeMusica(), dataFormatada});
+                }
+
+                JTable curtidasTable = new JTable(curtidasModel);
+                JScrollPane scrollPane = new JScrollPane(curtidasTable);
+                scrollPane.setPreferredSize(new Dimension(500, 300));
+
+                JOptionPane.showMessageDialog(null, scrollPane, "Minhas Curtidas", JOptionPane.PLAIN_MESSAGE);
+
+                conn1.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Erro ao listar curtidas.");
+            }
+        });
+
         listarMusicas();
     }
 
-    // Método para adicionar o Placeholder
     private void placeholder(JTextField field, String text) {
         field.setText(text);
         field.setForeground(Color.GRAY);
@@ -205,10 +232,9 @@ public class MusicaFrame extends JFrame {
     }
 
     private void listarMusicas() {
-        model.setRowCount(0); // Limpa a tabela
+        model.setRowCount(0);
 
         try {
-            // Antes de listar, registra a busca
             Conexao conexao = new Conexao();
             Connection conn = conexao.getConnection();
 
