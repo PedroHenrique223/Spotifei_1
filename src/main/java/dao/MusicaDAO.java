@@ -39,7 +39,7 @@ public class MusicaDAO {
                     rs.getInt("id"),
                     rs.getString("nome"),
                     rs.getString("artista"),
-                    rs.getString("gero")
+                    rs.getString("genero")
                 );
                 musicas.add(musica); // adiciona na lista
             }
